@@ -4,6 +4,9 @@ import { Providers } from "./providers";
 export const metadata = {
   title: "QueueMate",
   description: "Find your perfect squad.",
+  icons: {
+    icon: '/icon.png',
+  },
 };
 
 export default function RootLayout({ children }) {
