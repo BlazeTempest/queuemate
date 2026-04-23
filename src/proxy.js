@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export function middleware(request) {
+export function proxy(request) {
   // 1. Get the auth token from the cookies
   // Make sure 'token' matches exactly what you named the cookie in your login/signup API route
   const token = request.cookies.get('queuemate_session')?.value;
