@@ -1,0 +1,166 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// ------------------------------------------------------
+// 1. IDENTITY ZONE
+// ------------------------------------------------------
+
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  email        String   @unique
+  password     String // Ensure this is hashed (e.g., bcrypt) before saving
+  avatar       String?
+  globalRating Float    @default(0.0)
+  status       String   @default("OFFLINE") // ONLINE, OFFLINE, IN_GAME
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relationships
+  profiles     UserProfile[]
+  invitesSent  Invite[]      @relation("SentInvites")
+  invitesRecv  Invite[]      @relation("ReceivedInvites")
+  matchHistory MatchMember[]
+  messages     Message[]
+  ratingsGiven Rating[]      @relation("RatingsGiven")
+  ratingsRecv  Rating[]      @relation("RatingsReceived")
+}
+
+model Game {
+  id         String @id @default(uuid())
+  name       String @unique
+  maxPlayers Int    @default(2) // E.g., 5 for Valorant, 3 for Apex
+
+  // Game-specific configuration
+  ranks Rank[]
+  roles Role[]
+
+  // Player data
+  profiles UserProfile[]
+  matches  Match[]
+  invites  Invite[]
+}
+
+// ------------------------------------------------------
+// 2. PLAYER ZONE
+// ------------------------------------------------------
+
+model UserProfile {
+  id        String  @id @default(uuid())
+  userId    String
+  gameId    String
+  rankId    String?
+  playstyle String? // E.g., "Aggressive", "Supportive"
+
+  user  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game  Game       @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  rank  Rank?      @relation(fields: [rankId], references: [id])
+  roles UserRole[]
+
+  @@unique([userId, gameId]) // A user can only have ONE profile per game
+}
+
+model Rank {
+  id     String @id @default(uuid())
+  gameId String
+  name   String // E.g., "Diamond", "Gold"
+
+  game     Game          @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  profiles UserProfile[]
+}
+
+model Role {
+  id     String @id @default(uuid())
+  gameId String
+  name   String // E.g., "Duelist", "Healer"
+
+  game      Game       @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  userRoles UserRole[]
+}
+
+// Junction table because one profile can play multiple roles (e.g., Tank AND Healer)
+model UserRole {
+  id            String @id @default(uuid())
+  userProfileId String
+  roleId        String
+
+  userProfile UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+  role        Role        @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userProfileId, roleId])
+}
+
+// ------------------------------------------------------
+// 3. ACTION ZONE (Matches, Invites, Chat)
+// ------------------------------------------------------
+
+model Invite {
+  id         String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  gameId     String
+  status     String   @default("PENDING") // PENDING, ACCEPTED, REJECTED
+  createdAt  DateTime @default(now())
+
+  sender   User @relation("SentInvites", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedInvites", fields: [receiverId], references: [id], onDelete: Cascade)
+  game     Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+}
+
+model Match {
+  id        String   @id @default(uuid())
+  gameId    String
+  status    String   @default("WAITING") // WAITING (Lobby), ACTIVE (Playing), COMPLETED
+  createdAt DateTime @default(now())
+
+  game     Game          @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  members  MatchMember[]
+  messages Message[]
+  ratings  Rating[]
+}
+
+// Junction table to allow matches to have anywhere from 2 to 100 players
+model MatchMember {
+  matchId      String
+  userId       String
+  joinedAt     DateTime @default(now())
+  isChatActive Boolean  @default(true) // For Vercel Cron chat cleanup logic
+
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([matchId, userId]) // Composite primary key
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  matchId   String
+  senderId  String
+  text      String
+  createdAt DateTime @default(now())
+
+  match  Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  sender User  @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+model Rating {
+  id          String   @id @default(uuid())
+  matchId     String
+  raterId     String
+  ratedUserId String
+  rating      Int // 1 to 5 stars
+  createdAt   DateTime @default(now())
+
+  match     Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  rater     User  @relation("RatingsGiven", fields: [raterId], references: [id], onDelete: Cascade)
+  ratedUser User  @relation("RatingsReceived", fields: [ratedUserId], references: [id], onDelete: Cascade)
+}
