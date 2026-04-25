@@ -79,6 +79,7 @@ export default function Sidebar() {
   const [user, setUser] = useState(null);
   const [isOnline, setIsOnline] = useState(false); 
   const [inviteCount, setInviteCount] = useState(0);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Initialize data and WebSockets
   useEffect(() => {
@@ -181,12 +182,15 @@ export default function Sidebar() {
   }, [pathname, user]);
 
   const handleLogout = async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
       router.push('/');
       router.refresh(); 
     } catch (error) {
       console.error("Logout failed:", error);
+      setIsLoggingOut(false);
     }
   };
 
@@ -235,14 +239,22 @@ export default function Sidebar() {
             if (isMobile) setMobileOpen(false);
             handleLogout();
           }}
+          disabled={isLoggingOut}
           title={collapsed && !isMobile ? 'Logout' : undefined}
           className={cn(
-            'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all duration-150',
+            'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150',
+            isLoggingOut 
+              ? 'text-muted-foreground bg-secondary cursor-not-allowed'
+              : 'text-muted-foreground hover:bg-destructive/10 hover:text-destructive',
             collapsed && !isMobile ? 'justify-center' : ''
           )}
         >
-          <LogOut size={18} className="flex-shrink-0" />
-          {(!collapsed || isMobile) && <span>Logout</span>}
+          {isLoggingOut ? (
+            <div className="w-4.5 h-4.5 border-2 border-muted-foreground/30 border-t-muted-foreground animate-spin rounded-full flex-shrink-0" />
+          ) : (
+            <LogOut size={18} className="flex-shrink-0" />
+          )}
+          {(!collapsed || isMobile) && <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>}
         </button>
         
         {(!collapsed || isMobile) && (

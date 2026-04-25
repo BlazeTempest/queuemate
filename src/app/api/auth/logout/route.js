@@ -12,17 +12,17 @@ export async function POST(request) {
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
-        // 1. UPDATE DATABASE STATUS TO OFFLINE
-        await prisma.user.update({
-          where: { id: decoded.userId },
-          data: { status: 'OFFLINE' }
-        });
-
-        // 2. Tell everyone else they went offline
-        await pusherServer.trigger('queuemate-global', 'user-offline', {
-          userId: decoded.userId,
-          username: decoded.username
-        });
+        // Optimize: Run DB update and Pusher trigger in parallel
+        await Promise.all([
+          prisma.user.update({
+            where: { id: decoded.userId },
+            data: { status: 'OFFLINE' }
+          }),
+          pusherServer.trigger('queuemate-global', 'user-offline', {
+            userId: decoded.userId,
+            username: decoded.username
+          })
+        ]);
       } catch (e) {
         // Token was invalid or expired, proceed to delete cookie anyway
       }
