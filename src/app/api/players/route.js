@@ -32,12 +32,22 @@ export async function GET(request) {
     });
 
     // 3. Map the database structure into the exact flat format MOCK_PLAYERS used
-    const mappedPlayers = profiles.map(p => ({
+    const TEN_MINUTES = 10 * 60 * 1000;
+    const now = Date.now();
+
+    const mappedPlayers = profiles.map(p => {
+      // If the user is marked ONLINE but hasn't sent a heartbeat in 10+ min, treat as OFFLINE
+      const dbStatus = p.user.status;
+      const lastActive = p.user.lastActiveAt ? new Date(p.user.lastActiveAt).getTime() : 0;
+      const isStale = (now - lastActive) > TEN_MINUTES;
+      const effectiveStatus = (dbStatus === 'ONLINE' && isStale) ? 'OFFLINE' : dbStatus;
+
+      return {
       id: p.user.id,
       username: p.user.username,
-      avatar: p.user.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${p.user.username}`,
+      avatar: p.user.avatar || `https://api.dicebear.com/7.x/micah/svg?seed=${p.user.username.trim()}`,
       globalRating: p.user.globalRating,
-      status: p.user.status, // "ONLINE", "OFFLINE", "IN_GAME"
+      status: effectiveStatus,
       playstyle: p.playstyle,
       
       // IDs used for the filtering logic
@@ -49,7 +59,8 @@ export async function GET(request) {
       gameName: p.game.name,
       rankName: p.rank?.name || 'Unranked',
       roleNames: p.roles.map(r => r.role.name)
-    }));
+    };
+    });
 
     // 4. Filter out the current user
     const finalPlayers = currentUserId 

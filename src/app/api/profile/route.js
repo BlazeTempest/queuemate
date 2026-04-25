@@ -41,12 +41,23 @@ export async function PUT(request) {
     // ADDED avatar to the destructuring here!
     const { username, avatar, gameId, rankId, roleIds, playstyle } = await request.json();
 
+    // --- VALIDATION ---
+    if (!username || username.trim().length < 3) {
+      return NextResponse.json({ error: "Username must be at least 3 characters." }, { status: 400 });
+    }
+    if (username.trim().length > 20) {
+      return NextResponse.json({ error: "Username cannot exceed 20 characters." }, { status: 400 });
+    }
+    if (!gameId) {
+      return NextResponse.json({ error: "Please select a main game." }, { status: 400 });
+    }
+
     await prisma.$transaction(async (tx) => {
       
       // 1. ADDED avatar to the base User update!
       await tx.user.update({
         where: { id: decoded.userId },
-        data: { username, avatar } 
+        data: { username: username.trim(), avatar } 
       });
 
       if (gameId) {

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { Star, Swords, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -15,9 +16,11 @@ export default function PlayerCard({ player, onInvite, invited }) {
       {/* Avatar + Status */}
       <div className="flex items-start justify-between">
         <div className="relative">
-          <img
-            src={player.avatar}
+          <Image
+            src={(player.avatar || `https://api.dicebear.com/7.x/micah/svg?seed=${player.username}`).trim()}
             alt={player.username}
+            width={48}
+            height={48}
             className="w-12 h-12 rounded-full bg-secondary object-cover"
           />
           <span className={cn(

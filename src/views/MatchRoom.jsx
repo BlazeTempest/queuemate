@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMatch } from '@/lib/MatchContext';
+import Image from 'next/image';
 import { Send, LogOut, Loader2, Users, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -196,7 +197,7 @@ export default function ChatRoom() {
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in">
           <div className="bg-card border border-border w-full max-w-sm rounded-2xl p-6 shadow-2xl text-center flex flex-col items-center">
             
-            <img src={activeMatch.player.avatar} alt="Opponent" className="w-20 h-20 rounded-full bg-secondary object-cover border-4 border-card shadow-lg mb-3" />
+            <Image src={activeMatch.player.avatar || "https://api.dicebear.com/7.x/micah/svg?seed=placeholder"} alt="Opponent" width={80} height={80} className="w-20 h-20 rounded-full bg-secondary object-cover border-4 border-card shadow-lg mb-3" />
             <h3 className="text-xl font-bold text-foreground">Match Finished!</h3>
             <p className="text-sm text-muted-foreground mt-1">How was playing with <span className="text-foreground font-semibold">{activeMatch.player.username}</span>?</p>
             
@@ -245,7 +246,7 @@ export default function ChatRoom() {
       <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-secondary/30">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <img src={activeMatch.player.avatar} alt="Opponent" className="w-10 h-10 rounded-full bg-secondary object-cover" />
+            <Image src={activeMatch.player.avatar || "https://api.dicebear.com/7.x/micah/svg?seed=placeholder"} alt="Opponent" width={40} height={40} className="w-10 h-10 rounded-full bg-secondary object-cover" />
             <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-online rounded-full border-2 border-card" />
           </div>
           <div>

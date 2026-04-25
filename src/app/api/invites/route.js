@@ -3,6 +3,30 @@ import { prisma } from '@/lib/prisma';
 import { pusherServer } from '@/lib/pusher';
 import jwt from 'jsonwebtoken';
 
+// Helper: Check if two users are already in the same ACTIVE match
+async function areAlreadyMatched(userIdA, userIdB) {
+  // Step 1: Find all active match IDs where userA is a member
+  const userAActiveMatches = await prisma.matchMember.findMany({
+    where: {
+      userId: userIdA,
+      match: { status: 'ACTIVE' }
+    },
+    select: { matchId: true }
+  });
+
+  if (userAActiveMatches.length === 0) return false;
+
+  // Step 2: Check if userB is also a member of any of those specific matches
+  const sharedMatch = await prisma.matchMember.findFirst({
+    where: {
+      userId: userIdB,
+      matchId: { in: userAActiveMatches.map(m => m.matchId) }
+    }
+  });
+
+  return !!sharedMatch;
+}
+
 // 1. GET: Fetch all pending incoming invites for the logged-in user
 export async function GET(request) {
   try {
@@ -36,7 +60,7 @@ export async function GET(request) {
         id: inv.id,
         senderId: inv.sender.id,
         from: inv.sender.username,
-        avatar: inv.sender.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${inv.sender.username}`,
+        avatar: inv.sender.avatar || `https://api.dicebear.com/7.x/micah/svg?seed=${inv.sender.username}`,
         game: inv.game.name,
         rank: senderProfile?.rank?.name || 'Unranked',
         time: new Date(inv.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -76,6 +100,12 @@ export async function PUT(request) {
     }
 
     if (action === 'ACCEPT') {
+      // Block if they are already in an active match together
+      const alreadyMatched = await areAlreadyMatched(invite.senderId, invite.receiverId);
+      if (alreadyMatched) {
+        return NextResponse.json({ error: "You are already in an active match with this player" }, { status: 409 });
+      }
+
       const result = await prisma.$transaction(async (tx) => {
         await tx.invite.update({
           where: { id: inviteId },
@@ -116,7 +146,7 @@ export async function PUT(request) {
         player: {
           id: accepter.id,
           username: accepter.username,
-          avatar: accepter.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${accepter.username}`,
+          avatar: accepter.avatar || `https://api.dicebear.com/7.x/micah/svg?seed=${accepter.username}`,
           game: invite.game.name,
           rank: accepterProfile?.rank?.name || 'Unranked',
           online: true
@@ -153,6 +183,12 @@ export async function POST(request) {
       }
     });
 
+    // Block if they are already in an active match together
+    const alreadyMatched = await areAlreadyMatched(decoded.userId, receiverId);
+    if (alreadyMatched) {
+      return NextResponse.json({ error: "You are already in an active match with this player" }, { status: 409 });
+    }
+
     if (existingInvite) {
       return NextResponse.json({ error: "Invite already pending" }, { status: 409 });
     }
@@ -182,7 +218,7 @@ export async function POST(request) {
       id: newInvite.id,
       senderId: newInvite.sender.id,
       from: newInvite.sender.username,
-      avatar: newInvite.sender.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${newInvite.sender.username}`,
+      avatar: newInvite.sender.avatar || `https://api.dicebear.com/7.x/micah/svg?seed=${newInvite.sender.username}`,
       game: newInvite.game.name,
       rank: senderProfile?.rank?.name || 'Unranked',
       time: new Date(newInvite.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })

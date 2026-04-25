@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import SearchFilters from '../components/dashboard/SearchFilters';
 import PlayerCard from '../components/dashboard/PlayerCard';
 import Pagination from '../components/dashboard/Pagination';
@@ -17,8 +18,9 @@ export default function Dashboard() {
   const [filters, setFilters] = useState({ game: '', rank: '', role: '', search: '' });
   const [page, setPage] = useState(1);
   const [invitedIds, setInvitedIds] = useState([]);
+  const pathname = usePathname();
 
-  // 2. Fetch real players on mount
+  // 2. Fetch real players on mount AND when navigating back to this page
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
@@ -26,6 +28,7 @@ export default function Dashboard() {
         if (res.ok) {
           const data = await res.json();
           setPlayers(data);
+          setInvitedIds([]); // Reset invite buttons on every fresh load
         } else {
           toast.error("Failed to fetch players from database.");
         }
@@ -37,10 +40,15 @@ export default function Dashboard() {
     };
     
     fetchPlayers();
-  }, []);
+  }, [pathname]);
 
-  // 3. Filtering logic remains EXACTLY the same, but targets the 'players' state
+  // 3. Filtering logic — no game filter needed for initial state
+  const isDefaultState = !filters.game && !filters.rank && !filters.role && !filters.search;
+
   const filtered = players.filter((p) => {
+    // Initial state: show only ONLINE players from all games
+    if (isDefaultState) return p.status === 'ONLINE';
+    
     if (filters.game && p.game !== filters.game) return false;
     if (filters.rank && p.rank !== filters.rank) return false;
     if (filters.role && !p.roles.includes(filters.role)) return false;
@@ -48,8 +56,15 @@ export default function Dashboard() {
     return true;
   });
 
-  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
-  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  // Sort: online players always first
+  const sorted = [...filtered].sort((a, b) => {
+    const aOnline = a.status === 'ONLINE' ? 0 : 1;
+    const bOnline = b.status === 'ONLINE' ? 0 : 1;
+    return aOnline - bOnline;
+  });
+
+  const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
+  const paged = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const handleFilter = (f) => {
     setFilters(f);
@@ -100,27 +115,23 @@ export default function Dashboard() {
           <Loader2 className="w-10 h-10 animate-spin text-primary mb-4" />
           <p className="text-foreground font-semibold text-lg">Loading players...</p>
         </div>
-      ) : filters.game && paged.length === 0 ? (
+      ) : paged.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-center">
           <div className="w-16 h-16 rounded-2xl bg-secondary flex items-center justify-center mb-4">
             <Users size={28} className="text-muted-foreground" />
           </div>
-          <p className="text-foreground font-semibold text-lg">No players found</p>
-          <p className="text-muted-foreground text-sm mt-1">Try adjusting your filters</p>
-        </div>
-      ) : !filters.game ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-            <Users size={28} className="text-primary" />
-          </div>
-          <p className="text-foreground font-semibold text-lg">Select a game to get started</p>
-          <p className="text-muted-foreground text-sm mt-1">Choose a game from the dropdown above to find teammates</p>
+          <p className="text-foreground font-semibold text-lg">
+            {isDefaultState ? 'No players online right now' : 'No players found'}
+          </p>
+          <p className="text-muted-foreground text-sm mt-1">
+            {isDefaultState ? 'Check back later or try filtering by game' : 'Try adjusting your filters'}
+          </p>
         </div>
       ) : (
         <>
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm text-muted-foreground">
-              <span className="text-foreground font-medium">{filtered.length}</span> players found
+              <span className="text-foreground font-medium">{sorted.length}</span> {isDefaultState ? 'players online' : 'players found'}
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">

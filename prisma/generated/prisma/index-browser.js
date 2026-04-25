@@ -128,6 +128,7 @@ exports.Prisma.UserScalarFieldEnum = {
   avatar: 'avatar',
   globalRating: 'globalRating',
   status: 'status',
+  lastActiveAt: 'lastActiveAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

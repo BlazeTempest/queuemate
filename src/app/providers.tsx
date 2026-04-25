@@ -11,10 +11,15 @@ import { SidebarProvider } from '@/lib/SidebarContext';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from 'sonner';
 
+import { useHeartbeat } from '@/hooks/useHeartbeat';
+
 // This replaces your old <AuthenticatedApp /> logic
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const { isLoadingAuth, isLoadingPublicSettings, authError } = useAuth();
   const router = useRouter();
+
+  // Keep the user's online status alive while the tab is open
+  useHeartbeat();
 
   useEffect(() => {
     // Replaced navigateToLogin() with Next.js router
@@ -22,14 +27,6 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
       router.push('/auth');
     }
   }, [authError, router]);
-
-  if (isLoadingPublicSettings || isLoadingAuth) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-background">
-        <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-      </div>
-    );
-  }
 
   return <>{children}</>;
 }

@@ -2009,6 +2009,7 @@ export namespace Prisma {
     avatar: string | null
     globalRating: number | null
     status: string | null
+    lastActiveAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2021,6 +2022,7 @@ export namespace Prisma {
     avatar: string | null
     globalRating: number | null
     status: string | null
+    lastActiveAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2033,6 +2035,7 @@ export namespace Prisma {
     avatar: number
     globalRating: number
     status: number
+    lastActiveAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -2055,6 +2058,7 @@ export namespace Prisma {
     avatar?: true
     globalRating?: true
     status?: true
+    lastActiveAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2067,6 +2071,7 @@ export namespace Prisma {
     avatar?: true
     globalRating?: true
     status?: true
+    lastActiveAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2079,6 +2084,7 @@ export namespace Prisma {
     avatar?: true
     globalRating?: true
     status?: true
+    lastActiveAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -2178,6 +2184,7 @@ export namespace Prisma {
     avatar: string | null
     globalRating: number
     status: string
+    lastActiveAt: Date
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -2209,6 +2216,7 @@ export namespace Prisma {
     avatar?: boolean
     globalRating?: boolean
     status?: boolean
+    lastActiveAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     profiles?: boolean | User$profilesArgs<ExtArgs>
@@ -2231,11 +2239,12 @@ export namespace Prisma {
     avatar?: boolean
     globalRating?: boolean
     status?: boolean
+    lastActiveAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "email" | "password" | "avatar" | "globalRating" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "email" | "password" | "avatar" | "globalRating" | "status" | "lastActiveAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profiles?: boolean | User$profilesArgs<ExtArgs>
     invitesSent?: boolean | User$invitesSentArgs<ExtArgs>
@@ -2266,6 +2275,7 @@ export namespace Prisma {
       avatar: string | null
       globalRating: number
       status: string
+      lastActiveAt: Date
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -2651,6 +2661,7 @@ export namespace Prisma {
     readonly avatar: FieldRef<"User", 'String'>
     readonly globalRating: FieldRef<"User", 'Float'>
     readonly status: FieldRef<"User", 'String'>
+    readonly lastActiveAt: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -12898,6 +12909,7 @@ export namespace Prisma {
     avatar: 'avatar',
     globalRating: 'globalRating',
     status: 'status',
+    lastActiveAt: 'lastActiveAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -13183,6 +13195,7 @@ export namespace Prisma {
     avatar?: StringNullableFilter<"User"> | string | null
     globalRating?: FloatFilter<"User"> | number
     status?: StringFilter<"User"> | string
+    lastActiveAt?: DateTimeFilter<"User"> | Date | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     profiles?: UserProfileListRelationFilter
@@ -13202,6 +13215,7 @@ export namespace Prisma {
     avatar?: SortOrderInput | SortOrder
     globalRating?: SortOrder
     status?: SortOrder
+    lastActiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     profiles?: UserProfileOrderByRelationAggregateInput
@@ -13225,6 +13239,7 @@ export namespace Prisma {
     avatar?: StringNullableFilter<"User"> | string | null
     globalRating?: FloatFilter<"User"> | number
     status?: StringFilter<"User"> | string
+    lastActiveAt?: DateTimeFilter<"User"> | Date | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     profiles?: UserProfileListRelationFilter
@@ -13244,6 +13259,7 @@ export namespace Prisma {
     avatar?: SortOrderInput | SortOrder
     globalRating?: SortOrder
     status?: SortOrder
+    lastActiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -13264,6 +13280,7 @@ export namespace Prisma {
     avatar?: StringNullableWithAggregatesFilter<"User"> | string | null
     globalRating?: FloatWithAggregatesFilter<"User"> | number
     status?: StringWithAggregatesFilter<"User"> | string
+    lastActiveAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -13860,6 +13877,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileCreateNestedManyWithoutUserInput
@@ -13879,6 +13897,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileUncheckedCreateNestedManyWithoutUserInput
@@ -13898,6 +13917,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUpdateManyWithoutUserNestedInput
@@ -13917,6 +13937,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUncheckedUpdateManyWithoutUserNestedInput
@@ -13936,6 +13957,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -13948,6 +13970,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13960,6 +13983,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14615,6 +14639,7 @@ export namespace Prisma {
     avatar?: SortOrder
     globalRating?: SortOrder
     status?: SortOrder
+    lastActiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14631,6 +14656,7 @@ export namespace Prisma {
     avatar?: SortOrder
     globalRating?: SortOrder
     status?: SortOrder
+    lastActiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14643,6 +14669,7 @@ export namespace Prisma {
     avatar?: SortOrder
     globalRating?: SortOrder
     status?: SortOrder
+    lastActiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16929,6 +16956,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     invitesSent?: InviteCreateNestedManyWithoutSenderInput
@@ -16947,6 +16975,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     invitesSent?: InviteUncheckedCreateNestedManyWithoutSenderInput
@@ -17043,6 +17072,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     invitesSent?: InviteUpdateManyWithoutSenderNestedInput
@@ -17061,6 +17091,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     invitesSent?: InviteUncheckedUpdateManyWithoutSenderNestedInput
@@ -17436,6 +17467,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileCreateNestedManyWithoutUserInput
@@ -17454,6 +17486,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileUncheckedCreateNestedManyWithoutUserInput
@@ -17477,6 +17510,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileCreateNestedManyWithoutUserInput
@@ -17495,6 +17529,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileUncheckedCreateNestedManyWithoutUserInput
@@ -17554,6 +17589,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUpdateManyWithoutUserNestedInput
@@ -17572,6 +17608,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUncheckedUpdateManyWithoutUserNestedInput
@@ -17601,6 +17638,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUpdateManyWithoutUserNestedInput
@@ -17619,6 +17657,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUncheckedUpdateManyWithoutUserNestedInput
@@ -17867,6 +17906,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileCreateNestedManyWithoutUserInput
@@ -17885,6 +17925,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileUncheckedCreateNestedManyWithoutUserInput
@@ -17948,6 +17989,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUpdateManyWithoutUserNestedInput
@@ -17966,6 +18008,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUncheckedUpdateManyWithoutUserNestedInput
@@ -18007,6 +18050,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileCreateNestedManyWithoutUserInput
@@ -18025,6 +18069,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileUncheckedCreateNestedManyWithoutUserInput
@@ -18088,6 +18133,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUpdateManyWithoutUserNestedInput
@@ -18106,6 +18152,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUncheckedUpdateManyWithoutUserNestedInput
@@ -18147,6 +18194,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileCreateNestedManyWithoutUserInput
@@ -18165,6 +18213,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileUncheckedCreateNestedManyWithoutUserInput
@@ -18188,6 +18237,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileCreateNestedManyWithoutUserInput
@@ -18206,6 +18256,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     profiles?: UserProfileUncheckedCreateNestedManyWithoutUserInput
@@ -18269,6 +18320,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUpdateManyWithoutUserNestedInput
@@ -18287,6 +18339,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUncheckedUpdateManyWithoutUserNestedInput
@@ -18316,6 +18369,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUpdateManyWithoutUserNestedInput
@@ -18334,6 +18388,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: UserProfileUncheckedUpdateManyWithoutUserNestedInput

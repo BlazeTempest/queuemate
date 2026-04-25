@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Check, X, Gamepad2, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -149,7 +150,7 @@ export default function Invites() {
               className="bg-card border border-border rounded-xl p-4 flex items-center gap-4 hover:border-border/80 transition-all animate-fade-in"
             >
               <div className="relative flex-shrink-0">
-                <img src={inv.avatar} alt={inv.from} className="w-11 h-11 rounded-full bg-secondary object-cover" />
+                <Image src={inv.avatar || "https://api.dicebear.com/7.x/micah/svg?seed=placeholder"} alt={inv.from} width={44} height={44} className="w-11 h-11 rounded-full bg-secondary object-cover" />
                 <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-online rounded-full border-2 border-card" />
               </div>
               <div className="flex-1 min-w-0">

@@ -53,9 +53,10 @@ export default function SignupForm({ onSwitch }) {
     const errs = {};
     if (!form.username.trim()) errs.username = 'Username is required';
     else if (form.username.length < 3) errs.username = 'Username must be at least 3 characters';
+    else if (form.username.length > 20) errs.username = 'Username cannot exceed 20 characters';
     
     if (!form.email.trim()) errs.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Enter a valid email address';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = 'Enter a valid email address';
     
     if (!form.password) errs.password = 'Password is required';
     else if (form.password.length < 6) errs.password = 'Password must be at least 6 characters';

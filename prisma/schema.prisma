@@ -22,6 +22,7 @@ model User {
   avatar       String?
   globalRating Float    @default(0.0)
   status       String   @default("OFFLINE") // ONLINE, OFFLINE, IN_GAME
+  lastActiveAt DateTime @default(now())     // Heartbeat timestamp for auto-offline
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

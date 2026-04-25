@@ -1,24 +1,25 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { Camera, ChevronDown, Save, Loader2, X, AlertCircle } from 'lucide-react'; // Added AlertCircle
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
 // Preset default avatars for the user to choose from
 const DEFAULT_AVATARS = [
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Jocelyn",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Nala",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Mimi",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Max",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Jack",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Luna",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Leo",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Zoe",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Sam",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Mia"
+  "https://api.dicebear.com/7.x/micah/svg?seed=Felix",
+  "https://api.dicebear.com/7.x/micah/svg?seed=Aneka",
+  "https://api.dicebear.com/7.x/micah/svg?seed=Jocelyn",
+  "https://api.dicebear.com/7.x/micah/svg?seed=Nala",
+  "https://api.dicebear.com/7.x/micah/svg?seed=Mimi",
+  "https://api.dicebear.com/7.x/micah/svg?seed=Max",
+  "https://api.dicebear.com/7.x/micah/svg?seed=Jack",
+  "https://api.dicebear.com/7.x/micah/svg?seed=Luna",
+  "https://api.dicebear.com/7.x/micah/svg?seed=Leo",
+  "https://api.dicebear.com/7.x/micah/svg?seed=Zoe",
+  "https://api.dicebear.com/7.x/micah/svg?seed=Sam",
+  "https://api.dicebear.com/7.x/micah/svg?seed=Mia"
 ];
 
 function Select({ value, onChange, options, placeholder, disabled }) {
@@ -71,7 +72,23 @@ export default function ProfileView() {
   const [roles, setRoles] = useState([]);
   const [playstyle, setPlaystyle] = useState('casual');
 
+  // Snapshot of the original loaded values to detect changes
+  const originalState = useRef(null);
+
   const selectedGameData = masterGames.find(g => g.id === game);
+
+  // Compute whether the user has changed anything
+  const hasChanges = (() => {
+    if (!originalState.current) return false;
+    const o = originalState.current;
+    if (o.username !== username) return true;
+    if (o.avatar !== avatar) return true;
+    if (o.game !== game) return true;
+    if (o.rank !== rank) return true;
+    if (o.playstyle !== playstyle) return true;
+    if (JSON.stringify(o.roles) !== JSON.stringify([...roles].sort())) return true;
+    return false;
+  })();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,16 +108,36 @@ export default function ProfileView() {
         if (profileRes.ok) {
           const data = await profileRes.json();
           setUsername(data.username || '');
-          setAvatar(data.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.username || 'User'}`);
+          setAvatar(data.avatar || `https://api.dicebear.com/7.x/micah/svg?seed=${data.username || 'User'}`);
           setSavedProfiles(data.profiles || []);
+
+          let loadedGame = '';
+          let loadedRank = '';
+          let loadedRoles = [];
+          let loadedPlaystyle = 'casual';
 
           if (data.profiles && data.profiles.length > 0) {
             const activeProfile = data.profiles[0];
-            setGame(activeProfile.gameId);
-            setRank(activeProfile.rankId || '');
-            setRoles(activeProfile.roles.map(r => r.roleId) || []);
-            setPlaystyle(activeProfile.playstyle || 'casual');
+            loadedGame = activeProfile.gameId;
+            loadedRank = activeProfile.rankId || '';
+            loadedRoles = activeProfile.roles.map(r => r.roleId) || [];
+            loadedPlaystyle = activeProfile.playstyle || 'casual';
+
+            setGame(loadedGame);
+            setRank(loadedRank);
+            setRoles(loadedRoles);
+            setPlaystyle(loadedPlaystyle);
           }
+
+          // Snapshot the original state for dirty-checking
+          originalState.current = {
+            username: data.username || '',
+            avatar: data.avatar || `https://api.dicebear.com/7.x/micah/svg?seed=${data.username || 'User'}`,
+            game: loadedGame,
+            rank: loadedRank,
+            roles: [...loadedRoles].sort(),
+            playstyle: loadedPlaystyle
+          };
         }
       } catch (error) {
         toast.error("Network error while loading data");
@@ -209,6 +246,9 @@ export default function ProfileView() {
           const others = prev.filter(p => p.gameId !== game);
           return [...others, { gameId: game, rankId: rank, roles: roles.map(id => ({ roleId: id })), playstyle }];
         });
+
+        // Update the snapshot so the button disables again
+        originalState.current = { username, avatar, game, rank, roles: [...roles].sort(), playstyle };
       } else {
         const data = await res.json();
         toast.error(data.error || 'Failed to save profile');
@@ -252,7 +292,7 @@ export default function ProfileView() {
                     avatar === url ? "ring-4 ring-primary ring-offset-2 ring-offset-card" : "hover:ring-2 hover:ring-primary/50 hover:ring-offset-2 hover:ring-offset-card"
                   )}
                 >
-                  <img src={url} alt={`Avatar ${idx}`} className="w-full h-full bg-secondary object-cover" />
+                  <Image src={url} alt={`Avatar ${idx}`} width={96} height={96} className="w-full h-full bg-secondary object-cover" />
                 </button>
               ))}
             </div>
@@ -360,7 +400,7 @@ export default function ProfileView() {
         {/* Avatar */}
         <div className="flex items-center gap-4">
           <div className="relative">
-            <img src={avatar} alt="avatar" className="w-16 h-16 rounded-full bg-secondary object-cover" />
+            <Image src={avatar || "https://api.dicebear.com/7.x/micah/svg?seed=placeholder"} alt="avatar" width={64} height={64} className="w-16 h-16 rounded-full bg-secondary object-cover" />
             <button 
               onClick={() => setShowAvatarModal(true)}
               className="absolute bottom-0 right-0 w-6 h-6 bg-primary rounded-full flex items-center justify-center border-2 border-card hover:bg-primary/80 transition-colors"
@@ -477,8 +517,8 @@ export default function ProfileView() {
         {/* Save */}
         <button
           onClick={handleSave}
-          disabled={isSaving}
-          className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 disabled:opacity-70 disabled:cursor-not-allowed text-primary-foreground font-semibold py-2.5 rounded-lg transition-all duration-200 shadow-md shadow-primary/20"
+          disabled={isSaving || !hasChanges}
+          className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed text-primary-foreground font-semibold py-2.5 rounded-lg transition-all duration-200 shadow-md shadow-primary/20"
         >
           {isSaving ? <Loader2 size={15} className="animate-spin" /> : <Save size={15} />}
           {isSaving ? 'Saving...' : 'Save Profile'}

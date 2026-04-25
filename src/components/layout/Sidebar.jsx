@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -32,7 +33,7 @@ function ChatSection({ collapsed, onMobileClose }) {
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-all border border-primary/20"
         >
           <div className="relative flex-shrink-0">
-            <img src={activeMatch.player.avatar} alt="" className="w-7 h-7 rounded-full bg-secondary object-cover" />
+            <Image src={activeMatch.player.avatar || "https://api.dicebear.com/7.x/micah/svg?seed=placeholder"} alt="" width={28} height={28} className="w-7 h-7 rounded-full bg-secondary object-cover" />
             <span className="absolute bottom-0 right-0 w-2 h-2 bg-online rounded-full border-2 border-sidebar" />
           </div>
           <div className="min-w-0 flex-1 text-left">
@@ -247,9 +248,11 @@ export default function Sidebar() {
         {(!collapsed || isMobile) && (
           <div className="flex items-center gap-3 px-3 py-3 mt-1 rounded-lg bg-secondary/50">
             <div className="relative flex-shrink-0">
-              <img 
-                src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.username || 'Guest'}`} 
+              <Image 
+                src={user?.avatar || `https://api.dicebear.com/7.x/micah/svg?seed=${user?.username || 'Guest'}`} 
                 alt="avatar" 
+                width={32}
+                height={32}
                 className="w-8 h-8 rounded-full bg-secondary object-cover" 
               />
               <span className={cn(
@@ -274,9 +277,11 @@ export default function Sidebar() {
         {collapsed && !isMobile && (
           <div className="flex justify-center py-1 mt-1">
             <div className="relative">
-              <img 
-                src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.username || 'Guest'}`} 
+              <Image 
+                src={user?.avatar || `https://api.dicebear.com/7.x/micah/svg?seed=${user?.username || 'Guest'}`} 
                 alt="avatar" 
+                width={32}
+                height={32}
                 className="w-8 h-8 rounded-full bg-secondary object-cover" 
                 title={user?.username}
               />

@@ -34,7 +34,7 @@ export async function POST(request) {
     // 1. UPDATE DATABASE STATUS TO ONLINE
     await prisma.user.update({
       where: { id: user.id },
-      data: { status: 'ONLINE' }
+      data: { status: 'ONLINE', lastActiveAt: new Date() }
     });
 
     const token = jwt.sign(
