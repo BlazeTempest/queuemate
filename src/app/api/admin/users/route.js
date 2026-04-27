@@ -24,7 +24,19 @@ export async function GET() {
       orderBy: { createdAt: 'desc' },
     });
 
-    return NextResponse.json(users, { status: 200 });
+    const usersWithEffectiveStatus = users.map(user => {
+      let effectiveStatus = user.status;
+      // If the user isn't explicitly BANNED, check their heartbeat
+      if (user.status !== 'BANNED') {
+        const isStale = new Date() - new Date(user.lastActiveAt) > 10 * 60 * 1000; // 10 minutes
+        if (isStale) {
+          effectiveStatus = 'OFFLINE';
+        }
+      }
+      return { ...user, status: effectiveStatus };
+    });
+
+    return NextResponse.json(usersWithEffectiveStatus, { status: 200 });
   } catch (error) {
     console.error('Error fetching users:', error);
     return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });

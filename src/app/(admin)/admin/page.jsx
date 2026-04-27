@@ -14,7 +14,12 @@ export default async function AdminOverviewPage() {
   ] = await Promise.all([
     prisma.user.count(),
     prisma.user.count({
-      where: { status: { in: ['ONLINE', 'IN_GAME'] } },
+      where: { 
+        status: { in: ['ONLINE', 'IN_GAME'] },
+        lastActiveAt: {
+          gte: new Date(Date.now() - 10 * 60 * 1000)
+        }
+      },
     }),
     prisma.match.count({
       where: { status: { in: ['WAITING', 'ACTIVE'] } },
@@ -37,6 +42,17 @@ export default async function AdminOverviewPage() {
       where: { status: 'BANNED' },
     }),
   ]);
+
+  const recentUsersWithEffectiveStatus = recentUsers.map(user => {
+    let effectiveStatus = user.status;
+    if (user.status !== 'BANNED') {
+      const isStale = new Date() - new Date(user.lastActiveAt) > 10 * 60 * 1000;
+      if (isStale) {
+        effectiveStatus = 'OFFLINE';
+      }
+    }
+    return { ...user, status: effectiveStatus };
+  });
 
   const metrics = [
     {
@@ -127,7 +143,7 @@ export default async function AdminOverviewPage() {
           </div>
         </div>
         <div className="divide-y divide-border">
-          {recentUsers.map((u) => (
+          {recentUsersWithEffectiveStatus.map((u) => (
             <div key={u.id} className="px-6 py-4 flex items-center gap-4 hover:bg-secondary/30 transition-colors">
               <Image
                 src={u.avatar || `https://api.dicebear.com/7.x/micah/svg?seed=${u.username}`}
