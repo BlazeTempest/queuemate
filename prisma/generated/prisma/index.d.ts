@@ -70,6 +70,23 @@ export type Message = $Result.DefaultSelection<Prisma.$MessagePayload>
 export type Rating = $Result.DefaultSelection<Prisma.$RatingPayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const AccountRole: {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
+
+export type AccountRole = (typeof AccountRole)[keyof typeof AccountRole]
+
+}
+
+export type AccountRole = $Enums.AccountRole
+
+export const AccountRole: typeof $Enums.AccountRole
+
+/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -2009,6 +2026,7 @@ export namespace Prisma {
     avatar: string | null
     globalRating: number | null
     status: string | null
+    role: $Enums.AccountRole | null
     lastActiveAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2022,6 +2040,7 @@ export namespace Prisma {
     avatar: string | null
     globalRating: number | null
     status: string | null
+    role: $Enums.AccountRole | null
     lastActiveAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2035,6 +2054,7 @@ export namespace Prisma {
     avatar: number
     globalRating: number
     status: number
+    role: number
     lastActiveAt: number
     createdAt: number
     updatedAt: number
@@ -2058,6 +2078,7 @@ export namespace Prisma {
     avatar?: true
     globalRating?: true
     status?: true
+    role?: true
     lastActiveAt?: true
     createdAt?: true
     updatedAt?: true
@@ -2071,6 +2092,7 @@ export namespace Prisma {
     avatar?: true
     globalRating?: true
     status?: true
+    role?: true
     lastActiveAt?: true
     createdAt?: true
     updatedAt?: true
@@ -2084,6 +2106,7 @@ export namespace Prisma {
     avatar?: true
     globalRating?: true
     status?: true
+    role?: true
     lastActiveAt?: true
     createdAt?: true
     updatedAt?: true
@@ -2184,6 +2207,7 @@ export namespace Prisma {
     avatar: string | null
     globalRating: number
     status: string
+    role: $Enums.AccountRole
     lastActiveAt: Date
     createdAt: Date
     updatedAt: Date
@@ -2216,6 +2240,7 @@ export namespace Prisma {
     avatar?: boolean
     globalRating?: boolean
     status?: boolean
+    role?: boolean
     lastActiveAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2239,12 +2264,13 @@ export namespace Prisma {
     avatar?: boolean
     globalRating?: boolean
     status?: boolean
+    role?: boolean
     lastActiveAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "email" | "password" | "avatar" | "globalRating" | "status" | "lastActiveAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "email" | "password" | "avatar" | "globalRating" | "status" | "role" | "lastActiveAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profiles?: boolean | User$profilesArgs<ExtArgs>
     invitesSent?: boolean | User$invitesSentArgs<ExtArgs>
@@ -2275,6 +2301,7 @@ export namespace Prisma {
       avatar: string | null
       globalRating: number
       status: string
+      role: $Enums.AccountRole
       lastActiveAt: Date
       createdAt: Date
       updatedAt: Date
@@ -2661,6 +2688,7 @@ export namespace Prisma {
     readonly avatar: FieldRef<"User", 'String'>
     readonly globalRating: FieldRef<"User", 'Float'>
     readonly status: FieldRef<"User", 'String'>
+    readonly role: FieldRef<"User", 'AccountRole'>
     readonly lastActiveAt: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
@@ -12909,6 +12937,7 @@ export namespace Prisma {
     avatar: 'avatar',
     globalRating: 'globalRating',
     status: 'status',
+    role: 'role',
     lastActiveAt: 'lastActiveAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -13161,6 +13190,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'AccountRole'
+   */
+  export type EnumAccountRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AccountRole'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -13195,6 +13231,7 @@ export namespace Prisma {
     avatar?: StringNullableFilter<"User"> | string | null
     globalRating?: FloatFilter<"User"> | number
     status?: StringFilter<"User"> | string
+    role?: EnumAccountRoleFilter<"User"> | $Enums.AccountRole
     lastActiveAt?: DateTimeFilter<"User"> | Date | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -13215,6 +13252,7 @@ export namespace Prisma {
     avatar?: SortOrderInput | SortOrder
     globalRating?: SortOrder
     status?: SortOrder
+    role?: SortOrder
     lastActiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13239,6 +13277,7 @@ export namespace Prisma {
     avatar?: StringNullableFilter<"User"> | string | null
     globalRating?: FloatFilter<"User"> | number
     status?: StringFilter<"User"> | string
+    role?: EnumAccountRoleFilter<"User"> | $Enums.AccountRole
     lastActiveAt?: DateTimeFilter<"User"> | Date | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -13259,6 +13298,7 @@ export namespace Prisma {
     avatar?: SortOrderInput | SortOrder
     globalRating?: SortOrder
     status?: SortOrder
+    role?: SortOrder
     lastActiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13280,6 +13320,7 @@ export namespace Prisma {
     avatar?: StringNullableWithAggregatesFilter<"User"> | string | null
     globalRating?: FloatWithAggregatesFilter<"User"> | number
     status?: StringWithAggregatesFilter<"User"> | string
+    role?: EnumAccountRoleWithAggregatesFilter<"User"> | $Enums.AccountRole
     lastActiveAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -13877,6 +13918,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13897,6 +13939,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13917,6 +13960,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13937,6 +13981,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13957,6 +14002,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13970,6 +14016,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13983,6 +14030,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14559,6 +14607,13 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type EnumAccountRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccountRole | EnumAccountRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.AccountRole[]
+    notIn?: $Enums.AccountRole[]
+    not?: NestedEnumAccountRoleFilter<$PrismaModel> | $Enums.AccountRole
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -14639,6 +14694,7 @@ export namespace Prisma {
     avatar?: SortOrder
     globalRating?: SortOrder
     status?: SortOrder
+    role?: SortOrder
     lastActiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14656,6 +14712,7 @@ export namespace Prisma {
     avatar?: SortOrder
     globalRating?: SortOrder
     status?: SortOrder
+    role?: SortOrder
     lastActiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14669,6 +14726,7 @@ export namespace Prisma {
     avatar?: SortOrder
     globalRating?: SortOrder
     status?: SortOrder
+    role?: SortOrder
     lastActiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14728,6 +14786,16 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type EnumAccountRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccountRole | EnumAccountRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.AccountRole[]
+    notIn?: $Enums.AccountRole[]
+    not?: NestedEnumAccountRoleWithAggregatesFilter<$PrismaModel> | $Enums.AccountRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAccountRoleFilter<$PrismaModel>
+    _max?: NestedEnumAccountRoleFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -15273,6 +15341,10 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type EnumAccountRoleFieldUpdateOperationsInput = {
+    set?: $Enums.AccountRole
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -16244,6 +16316,13 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumAccountRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccountRole | EnumAccountRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.AccountRole[]
+    notIn?: $Enums.AccountRole[]
+    not?: NestedEnumAccountRoleFilter<$PrismaModel> | $Enums.AccountRole
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -16327,6 +16406,16 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAccountRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccountRole | EnumAccountRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.AccountRole[]
+    notIn?: $Enums.AccountRole[]
+    not?: NestedEnumAccountRoleWithAggregatesFilter<$PrismaModel> | $Enums.AccountRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAccountRoleFilter<$PrismaModel>
+    _max?: NestedEnumAccountRoleFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -16956,6 +17045,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16975,6 +17065,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17072,6 +17163,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17091,6 +17183,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17467,6 +17560,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17486,6 +17580,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17510,6 +17605,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17529,6 +17625,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17589,6 +17686,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17608,6 +17706,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17638,6 +17737,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17657,6 +17757,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17906,6 +18007,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17925,6 +18027,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17989,6 +18092,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18008,6 +18112,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18050,6 +18155,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18069,6 +18175,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18133,6 +18240,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18152,6 +18260,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18194,6 +18303,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18213,6 +18323,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18237,6 +18348,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18256,6 +18368,7 @@ export namespace Prisma {
     avatar?: string | null
     globalRating?: number
     status?: string
+    role?: $Enums.AccountRole
     lastActiveAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18320,6 +18433,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18339,6 +18453,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18369,6 +18484,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18388,6 +18504,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     globalRating?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    role?: EnumAccountRoleFieldUpdateOperationsInput | $Enums.AccountRole
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

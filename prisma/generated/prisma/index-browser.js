@@ -128,6 +128,7 @@ exports.Prisma.UserScalarFieldEnum = {
   avatar: 'avatar',
   globalRating: 'globalRating',
   status: 'status',
+  role: 'role',
   lastActiveAt: 'lastActiveAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -287,7 +288,10 @@ exports.Prisma.RatingOrderByRelevanceFieldEnum = {
   raterId: 'raterId',
   ratedUserId: 'ratedUserId'
 };
-
+exports.AccountRole = exports.$Enums.AccountRole = {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',

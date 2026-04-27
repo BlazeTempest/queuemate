@@ -13,18 +13,26 @@ datasource db {
 // ------------------------------------------------------
 // 1. IDENTITY ZONE
 // ------------------------------------------------------
+// ------------------------------------------------------
+// 1. IDENTITY ZONE
+// ------------------------------------------------------
+enum AccountRole {
+  USER
+  ADMIN
+}
 
 model User {
-  id           String   @id @default(uuid())
-  username     String   @unique
-  email        String   @unique
-  password     String // Ensure this is hashed (e.g., bcrypt) before saving
+  id           String      @id @default(uuid())
+  username     String      @unique
+  email        String      @unique
+  password     String 
   avatar       String?
-  globalRating Float    @default(0.0)
-  status       String   @default("OFFLINE") // ONLINE, OFFLINE, IN_GAME
-  lastActiveAt DateTime @default(now())     // Heartbeat timestamp for auto-offline
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  globalRating Float       @default(0.0)
+  status       String      @default("OFFLINE") 
+  role         AccountRole @default(USER)        // <-- Changed to AccountRole
+  lastActiveAt DateTime    @default(now())     
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 
   // Relationships
   profiles     UserProfile[]

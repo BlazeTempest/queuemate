@@ -16,7 +16,7 @@ export async function GET(request) {
     // Fetch the latest user data (so if they changed their avatar, it updates instantly)
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
-      select: { id: true, username: true, avatar: true } // Don't send the password!
+      select: { id: true, username: true, avatar: true, role: true } // Don't send the password!
     });
 
     if (!user) {

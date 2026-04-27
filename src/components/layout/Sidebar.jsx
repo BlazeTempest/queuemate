@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Mail, User, LogOut, Menu, X, MessageSquare, ChevronLeft, ChevronRight, Swords, Users } from 'lucide-react';
+import { LayoutDashboard, Mail, User, LogOut, Menu, X, MessageSquare, ChevronLeft, ChevronRight, Swords, Users, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useSidebar } from '@/lib/SidebarContext';
 import { useMatch } from '@/lib/MatchContext';
@@ -197,6 +197,22 @@ export default function Sidebar() {
   const NavLinks = ({ isMobile = false }) => (
     <>
       <nav className="flex-1 px-3 py-4 space-y-1">
+        {user?.role === 'ADMIN' && (
+          <Link
+            href="/admin"
+            onClick={() => isMobile && setMobileOpen(false)}
+            title={collapsed && !isMobile ? 'Admin Dashboard' : undefined}
+            className={cn(
+              'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 group relative mb-4',
+              collapsed && !isMobile ? 'justify-center' : '',
+              'bg-gradient-to-r from-primary/10 to-purple-500/10 text-primary hover:from-primary/20 hover:to-purple-500/20 border border-primary/20'
+            )}
+          >
+            <Shield size={18} className="flex-shrink-0 text-primary" />
+            {(!collapsed || isMobile) && <span>Admin Dashboard</span>}
+          </Link>
+        )}
+        
         {NAV_ITEMS.map((item) => {
           const active = pathname === item.path || (item.path === '/chat' && pathname === '/match');
           const displayBadge = item.label === 'Invites' ? inviteCount : null;

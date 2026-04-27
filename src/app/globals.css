@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
-/* 1. Map your custom classes so Tailwind v4 knows they exist */
 @theme {
   --font-inter: 'Inter', sans-serif;
 
@@ -24,7 +23,7 @@
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
-  
+
   /* Your custom colors */
   --color-sidebar-bg: hsl(var(--sidebar-bg));
   --color-online: hsl(var(--online));
@@ -101,11 +100,12 @@
 
 /* 3. Base application styles */
 @layer base {
-  * { 
+  * {
     border-color: var(--color-border);
     outline-color: hsl(var(--ring) / 0.5);
   }
-  body { 
+
+  body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-inter);
@@ -114,9 +114,25 @@
 }
 
 /* 4. Scrollbar & Selects */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
 
-select option { background: hsl(var(--secondary)); color: hsl(var(--foreground)); }
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+select option {
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
+}

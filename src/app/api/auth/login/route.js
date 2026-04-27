@@ -25,6 +25,14 @@ export async function POST(request) {
       return NextResponse.json({ error: "Invalid User" }, { status: 401 });
     }
 
+    // Block banned users from logging in
+    if (user.status === 'BANNED') {
+      return NextResponse.json({ 
+        error: "Your account has been banned. Please contact the admin for further assistance.",
+        banned: true 
+      }, { status: 403 });
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -51,7 +59,7 @@ export async function POST(request) {
     });
 
     const response = NextResponse.json(
-      { message: "Login successful", user: { id: user.id, username: user.username, avatar: user.avatar } },
+      { message: "Login successful", user: { id: user.id, username: user.username, avatar: user.avatar, role: user.role } },
       { status: 200 }
     );
 

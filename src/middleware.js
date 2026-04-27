@@ -8,7 +8,7 @@ export function middleware(request) {
   const currentPath = request.nextUrl.pathname;
 
   // 2. Define which routes require the user to be logged in
-  const isProtectedRoute = currentPath.startsWith('/dashboard');
+  const isProtectedRoute = currentPath.startsWith('/dashboard') || currentPath.startsWith('/admin');
 
   // 3. Define which routes are ONLY for logged-out users (like the login/signup page)
   // Adjust '/' or '/login' based on where your Auth.jsx component lives

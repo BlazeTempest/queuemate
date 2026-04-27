@@ -44,7 +44,11 @@ export default function LoginForm({ onSwitch }) {
       }
 
       // Success! The API has set the HttpOnly cookie.
-      router.push('/dashboard');
+      if (data.user?.role === 'ADMIN') {
+        router.push('/admin');
+      } else {
+        router.push('/dashboard');
+      }
       router.refresh(); // Forces Next.js to update the UI with the new auth state
       
     } catch (error) {
