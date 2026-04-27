@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { 
   Users, Search, ShieldCheck, ShieldOff, Ban, CheckCircle, 
-  Star, Loader2, AlertTriangle, RefreshCw, X
+  Star, Loader2, AlertTriangle, RefreshCw, X, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -93,6 +93,10 @@ export default function AdminUsersPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -144,6 +148,15 @@ export default function AdminUsersPage() {
     u.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
     u.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Reset to page 1 when search query changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  const totalPages = Math.ceil(filteredUsers.length / pageSize) || 1;
+  const startIndex = (currentPage - 1) * pageSize;
+  const paginatedUsers = filteredUsers.slice(startIndex, startIndex + pageSize);
 
   const getStatusBadge = (status) => {
     const styles = {
@@ -235,7 +248,7 @@ export default function AdminUsersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {filteredUsers.map((u) => {
+              {paginatedUsers.map((u) => {
                 const isLowRating = u.globalRating < 2.5 && u.globalRating > 0;
                 const isBanned = u.status === 'BANNED';
                 
@@ -356,6 +369,34 @@ export default function AdminUsersPage() {
           </div>
         )}
       </div>
+
+      {/* Pagination UI */}
+      {filteredUsers.length > 0 && (
+        <div className="flex items-center justify-between bg-card border border-border rounded-xl px-4 py-3">
+          <div className="text-sm text-muted-foreground">
+            Showing <span className="font-medium text-foreground">{startIndex + 1}</span> to <span className="font-medium text-foreground">{Math.min(startIndex + pageSize, filteredUsers.length)}</span> of <span className="font-medium text-foreground">{filteredUsers.length}</span> users
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="p-1.5 rounded-lg border border-border bg-secondary text-foreground hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <span className="text-sm font-medium text-foreground px-2">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="p-1.5 rounded-lg border border-border bg-secondary text-foreground hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
+      )}
 
       <ConfirmActionModal 
         pendingAction={pendingAction} 
